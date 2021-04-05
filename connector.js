@@ -3,18 +3,7 @@ const deviceStates = { switch: 'off',thermostatMode:'off',temperature:12,healthS
 const RESTrequest = require('request');
 require('dotenv').config();
 
-let accessTokens = {
-  callbackAuthentication: {
-    tokenType: 'Bearer',
-    accessToken: 'eyJhbGciOiJIUzM4NCJ9.OTNmMDYxNWYtN2E4ZC00NjU2LWE1OTktZTFmMWViYzZiM2JhOnN0LXNjaGVtYS1jb2xsZWN0aW9u.TbbPG1yjNl_OTUxw8Bd6np-ddb-2ZSNsbgbVHS0-PaiWga8KJXqLuwmpHKlbfTr3',
-    refreshToken: 'eyJhbGciOiJIUzM4NCJ9.NGFjNDJlNTEtZGZhYi00YWVjLTgyYzEtM2Y5YWUwNDY5NjVlOnN0LXNjaGVtYS1jb2xsZWN0aW9u.1SLY4sqI7EGgFUdKhWVaGOYAUSCF81WaGAXN3zROTQwan_--RUDCBrcXEITH32Jc',
-    expiresIn: 86400
-  },
-  callbackUrls: {
-    oauthToken: 'https://c2c-us.smartthings.com/oauth/token',
-    stateCallback: 'https://c2c-us.smartthings.com/device/events'
-  }
-};
+let accessTokens = {}; //Currently, if the server is reseted, this value will be lost
 
 const connector = new SchemaConnector()
     .enableEventLogging(2)
@@ -130,6 +119,18 @@ const connector = new SchemaConnector()
     })
     .callbackAccessHandler((accessToken, callbackAuthentication, callbackUrls) => {
       //Here's where we receive the tokens for the callbacks
+      /*Eg.
+        callbackAuthentication: {
+          tokenType: 'Bearer',
+          accessToken: 'eyJhbGciOiJIUzM4NCJ9.....',
+          refreshToken: 'eyJhbGciOiJIUzM4NCJ9....',
+          expiresIn: 86400
+        },
+        callbackUrls: {
+          oauthToken: 'https://c2c-us.smartthings.com/oauth/token',
+          stateCallback: 'https://c2c-us.smartthings.com/device/events'
+        }
+      */
       accessTokens = {
         callbackAuthentication,
         callbackUrls
