@@ -1,0 +1,17 @@
+{
+  "name": "st-schema-devstatecallback",
+  "version": "1.0.0",
+  "description": "check the dev state callback execution",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "NZE",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "st-schema": "git+https://github.com/SmartThingsCommunity/st-schema-nodejs.git"
+  }
+}
