@@ -10,14 +10,14 @@ const connector = new SchemaConnector()
     .clientId(process.env.ST_CLIENT_ID)
     .clientSecret(process.env.ST_CLIENT_SECRET)
     .discoveryHandler((accessToken, response) => {         
-      const d = response.addDevice('smartThermostat3', 'smartThermostat3', 'ed0f1f26-3365-4b90-903f-cc2f1973495e')
+      const d = response.addDevice('smartThermostat', 'smartThermostat', 'device-profile-id')
       //Device manufacturer
-      d.manufacturerName('smartThermostat3');
+      d.manufacturerName('smartThermostat');
       //Device model
-      d.modelName('smartThermostat3');
+      d.modelName('smartThermostat');
     })
     .stateRefreshHandler((accessToken, response) => {
-      response.addDevice('smartThermostat3', [
+      response.addDevice('smartThermostat', [
         {
           component: 'main',
           capability: 'st.switch',
@@ -67,47 +67,27 @@ const connector = new SchemaConnector()
             component: cmd.component,
             capability: cmd.capability
           };
-          const state2 = {
-            component: cmd.component
-          };
           if (cmd.capability === 'st.thermostatMode' && cmd.command === 'setThermostatMode') {
             state.attribute = 'thermostatMode';
             state.value = deviceStates.thermostatMode = cmd.arguments[0]
             deviceResponse.addState(state);
-            //health
-            state2.capability = 'st.healthCheck'
-            state2.attribute = 'healthStatus';
-            state2.value = deviceStates.healthStatus = "online";
-            deviceResponse.addState(state2);
 
           } else if (cmd.capability === 'st.thermostatHeatingSetpoint' && cmd.command === 'setHeatingSetpoint'){
             state.attribute = 'heatingSetpoint';
             state.value = deviceStates.heatingSetpoint = cmd.arguments[0]
+            state.unit='C'
             deviceResponse.addState(state);
 
-            //health
-            state2.capability = 'st.healthCheck'
-            state2.attribute = 'healthStatus';
-            state2.value = deviceStates.healthStatus = "online";
-            deviceResponse.addState(state2);
           } else if (cmd.capability === 'st.thermostatCoolingSetpoint' && cmd.command === 'setCoolingSetpoint'){
             state.attribute = 'coolingSetpoint';
             state.value = deviceStates.coolingSetpoint = cmd.arguments[0]
+            state.unit='C'
             deviceResponse.addState(state);
-            //health
-            state2.capability = 'st.healthCheck'
-            state2.attribute = 'healthStatus';
-            state2.value = deviceStates.healthStatus = "online";
-            deviceResponse.addState(state2);
+
           } else  if (cmd.capability === 'st.switch') {
             state.attribute = 'switch';
             state.value = deviceStates.switch = cmd.command === 'on' ? 'on' : 'off';
             deviceResponse.addState(state);
-            //health
-            state2.capability = 'st.healthCheck'
-            state2.attribute = 'healthStatus';
-            state2.value = deviceStates.healthStatus = "online";
-            deviceResponse.addState(state2);
           } else
           {
             deviceResponse.setError(
