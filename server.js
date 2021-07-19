@@ -66,6 +66,7 @@
     }
      const updateRequest = new StateUpdateRequest(process.env.ST_CLIENT_ID, process.env.ST_CLIENT_SECRET);
      updateRequest['globalError']=globalError
+     let deviceState = null;
      updateRequest.updateState(accessTokens.callbackUrls, accessTokens.callbackAuthentication, deviceState)
      .catch((error)=>{//it shouldn't be successful as globalError causes an exception that will delete the integration
       console.log("delete success ", error)
